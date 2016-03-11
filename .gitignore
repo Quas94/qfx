@@ -1,0 +1,8 @@
+## Visual Studio project files/folders
+.vs/
+Debug/
+qfx.VC.opendb
+qfx.sdf
+qfx.sln
+qfx.vcxproj
+qfx.vcxproj.filters
