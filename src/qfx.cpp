@@ -1,21 +1,12 @@
-/**
- * Entry point for the qfx trading application.
- *
- * Author: Michael
- */
-
-#include <cstdlib>
 #include <iostream>
 #include <iterator>
 #include <string>
 #include <sstream>
 
-#include "ta_libc.h"
-#include "libjson.h"
-
-#include <Poco/Net/HTTPClientSession.h>
+#include <Poco/Net/HTTPSClientSession.h>
 #include <Poco/Net/HTTPRequest.h>
 #include <Poco/Net/HTTPResponse.h>
+#include <Poco/Net/SSLManager.h>
 #include <Poco/StreamCopier.h>
 #include <Poco/Path.h>
 #include <Poco/URI.h>
@@ -61,10 +52,12 @@ void handleStream(streambuf* stream_buffer)
 int main()
 {
 	try {
+		const Context::Ptr context = new Context(Context::CLIENT_USE, "", "", "", Context::VERIFY_NONE, 9, false, "ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH");
+
 		// prepare session
 		URI uri(domain + std::string("/v1/prices?accountId=") + account_id + std::string("&instruments=") + instruments);
 
-		HTTPClientSession session(uri.getHost(), uri.getPort());
+		HTTPSClientSession session(uri.getHost(), uri.getPort(), context);
 		session.setKeepAlive(true);
 
 		// prepare path
